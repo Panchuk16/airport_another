@@ -1,9 +1,27 @@
+import os
+import requests
 from flask import Blueprint, render_template, redirect, url_for, Flask, jsonify, request
 from airport_service.extensions import db
 from airport_service.models import Airport, AirplaneType, Airplane, Flight, FlightLog
 from datetime import datetime
 
+FLIGHT_LOG_SERVICE_URL = os.getenv('FLIGHT_LOG_SERVICE_URL')
+
 main = Blueprint("main", __name__)
+
+
+# FLIGHT_LOG_SERVICE
+@main.route('/create_flight_log', methods=['POST'])
+def create_flight_log():
+    data = request.get_json()
+    try:
+        response = requests.post(f'{FLIGHT_LOG_SERVICE_URL}/flight_logs', json=data)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': f'Error communicating with flight_log_service: {str(e)}'}), 500
+    
+    return jsonify(response.json()), response.status_code
+
 
 # Trasa do pobierania listy lotnisk
 @main.route('/airports', methods=['GET'])

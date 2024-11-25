@@ -10,6 +10,17 @@ services:
       FLASK_APP: airport_service
     command: flask run -h 0.0.0.0 -p 5001
 
+  flight_log_service:
+    build: ./flight_log_service
+    ports:
+      - "5002:5002"
+    volumes:
+      - .:/app
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_APP: flight_log_service
+    command: flask run -h 0.0.0.0 -p 5002
+
   db:
     image: postgres
     environment:
