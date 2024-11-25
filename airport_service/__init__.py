@@ -1,7 +1,7 @@
 from flask import Flask 
 
-from app.extensions import db
-from app.routes import main
+from airport_service.extensions import db
+from airport_service.routes import main
 
 def create_app():
     app = Flask(__name__)

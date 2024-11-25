@@ -8,4 +8,4 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["flask", "run", "-h", "0.0.0.0"]
+CMD ["flask", "run", "-h", "0.0.0.0", "p", "5001"]

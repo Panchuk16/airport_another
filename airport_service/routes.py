@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, Flask, jsonify, request
-from app.extensions import db
-from app.models import Airport, AirplaneType, Airplane, Flight, FlightLog
+from airport_service.extensions import db
+from airport_service.models import Airport, AirplaneType, Airplane, Flight, FlightLog
 from datetime import datetime
 
 main = Blueprint("main", __name__)

@@ -1,12 +1,13 @@
 services:
-  app:
-    build: .
+  airport_service:
+    build: ./airport_service
     ports:
       - "5001:5001"
     volumes:
       - .:/app
     environment:
       FLASK_DEBUG: 1
+      FLASK_APP: airport_service
     command: flask run -h 0.0.0.0 -p 5001
 
   db:
