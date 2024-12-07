@@ -4,6 +4,9 @@ from flask import Blueprint, render_template, redirect, url_for, Flask, jsonify,
 from airport_service.extensions import db
 from airport_service.models import Airport, AirplaneType, Airplane, Flight, FlightLog
 from datetime import datetime
+from airport_service.auth import auth_bp
+from flask_jwt_extended import JWTManager
+from dotenv import load_dotenv
 
 FLIGHT_LOG_SERVICE_URL = os.getenv('FLIGHT_LOG_SERVICE_URL')
 
@@ -184,3 +187,27 @@ def get_flight_logs():
         'arrival_time': flight_log.arrival_time.strftime('%Y-%m-%d %H:%M:%S'),
         'status': flight_log.status
     } for flight_log in flight_logs])
+
+# Blueprint
+def create_app():
+    load_dotenv()
+
+    app = Flask(__name__)
+    
+    app.config.from_prefixed_env()
+
+    db.init_app(app)
+
+    # Konfiguracja JWT
+    app.config['JWT_SECRET_KEY'] = 'your-secret-key'  # Secret key
+    jwt = JWTManager(app)  # Inicjalizacja JWT
+
+    # Creating tables
+    with app.app_context():
+        db.create_all()
+
+    # Registration blueprint for auth
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(main)
+
+    return app

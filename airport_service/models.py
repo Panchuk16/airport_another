@@ -1,6 +1,7 @@
 # models.py
 
 from .extensions import db
+from .users import User
 
 #AIRPORTS
 class Airport(db.Model):
